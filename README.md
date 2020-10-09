@@ -31,3 +31,11 @@ Each point on a shape should be shaded according to this formula, where `normal_
     final_color = ambient * shape_color + diffuse * normal_factor * light_color * intensity * shape_color * (1 / distance^2)
 
 ![Checkpoint 3 render](renders/checkpoint_3.png?raw=true)
+
+### 4: Planes and shadows
+
+Read shapes where `type` is `plane` from the scene description. Each plane is assumed to be horizontal with a normal vector of (0, 1, 0), but can have a translation specified by `translate`. Material properties function the same way they do for spheres. Extend the camera ray intersection tests to also compute intersections with planes, and draw the appropriate color for the plane if it is the closest intersection.
+
+For each pixel and each light source, create a shadow ray that starts at the intersection point on the shape being drawn and points towards the light source. If this ray intersects any other shapes in the scene, the point is in shadow and the light source should not influence the final color. You may need to ignore intersections that are very close to the beginning of the ray (within some "epsilon") to avoid numerical accuracy issues when the ray starts near the surface of the shape.
+
+![Checkpoint 4 render](renders/checkpoint_4.png?raw=true)

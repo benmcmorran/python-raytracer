@@ -3,14 +3,31 @@ import png
 import sys
 import math
 
-from shapes import Sphere, PointLight
+from shapes import Material, Sphere, Plane, PointLight
 from vector import Vector, Ray
+
+EPSILON = 1e-6
 
 def parse_color(json):
     return Vector(json['red'], json['green'], json['blue'])
 
 def parse_vector(json):
     return Vector(json['x'], json['y'], json['z'])
+
+def parse_material(json):
+    return Material(parse_color(json['color']), json['ambient'], json['diffuse'])
+
+def closest_intersection(shapes, ray):
+    closest_shape = None
+    intersection = None
+    for shape in shapes:
+        t = shape.intersect(ray)
+        if t is None or t < EPSILON:
+            continue
+        if intersection is None or t < intersection:
+            closest_shape = shape
+            intersection = t
+    return closest_shape, ray.at(intersection) if intersection else None
 
 def main(argv):
     if len(argv) != 3:
@@ -27,17 +44,21 @@ def main(argv):
 
     background_color = parse_color(scene_data['world']['color'])
 
-    shapes = [
-        Sphere(
-            parse_vector(shape_data['transform']['translate']),
-            shape_data['radius'],
-            parse_color(shape_data['material']['color']),
-            shape_data['material']['ambient'],
-            shape_data['material']['diffuse']
-        )
-        for shape_data in scene_data['shapes']
-        if shape_data['type'] == 'sphere'
-    ]
+    shapes = []
+    for shape_data in scene_data['shapes']:
+        shape_type = shape_data['type']
+        if shape_type == 'sphere':
+            shapes.append(Sphere(
+                parse_vector(shape_data['transform']['translate']),
+                shape_data['radius'],
+                parse_material(shape_data['material'])
+            ))
+        elif shape_type == 'plane':
+            shapes.append(Plane(
+                parse_vector(shape_data['transform']['translate']),
+                Vector(0.0, 1.0, 0.0),
+                parse_material(shape_data['material'])
+            ))
 
     lights = [
         PointLight(
@@ -58,27 +79,21 @@ def main(argv):
                 Vector(x - (width / 2), (width / 2) - y, depth).normalize()
             )
 
-            closest_shape = None
-            intersection = None
-            for shape in shapes:
-                t = shape.intersect(camera_ray)
-                if t is None:
-                    continue
-                if intersection is None or t < intersection:
-                    closest_shape = shape
-                    intersection = t
-            
+            closest_shape, intersection = closest_intersection(shapes, camera_ray)
+
             if closest_shape != None:
-                intersection = camera_ray.at(intersection)
-                final_color = closest_shape.color.scale(closest_shape.ambient)
+                final_color = closest_shape.material.color.scale(closest_shape.material.ambient)
                 for light in lights:
                     light_vector = light.position.subtract(intersection)
+                    light_ray = Ray(intersection, light_vector.normalize())
+                    if closest_intersection(shapes, light_ray)[0] is not None:
+                        continue
                     normal_factor = max(0, closest_shape.normal_at(intersection).dot(
                         light_vector.normalize()
                     ))
                     final_color = final_color.add(
-                        closest_shape.color.multiply(light.color)
-                        .scale(closest_shape.diffuse * normal_factor * light.intensity / light_vector.length())
+                        closest_shape.material.color.multiply(light.color)
+                        .scale(closest_shape.material.diffuse * normal_factor * light.intensity / light_vector.length())
                     )
                 row_data += final_color.to_bytes()
             else:
