@@ -39,9 +39,10 @@
                 "translate": {
                     "x": -1.0,
                     "y": -0.5,
-                    "z": 2.0
+                    "z": 6.0
                 }
             },
+            "radius": 0.5,
             "material": {
                 "color": {
                     "red": 0.9,
@@ -59,10 +60,11 @@
             "transform": {
                 "translate": {
                     "x": 1.0,
-                    "y": -0.5,
-                    "z": 2.0
+                    "y": 0.0,
+                    "z": 7.0
                 }
             },
+            "radius": 1.0,
             "material": {
                 "color": {
                     "red": 0.1,
