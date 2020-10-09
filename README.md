@@ -21,3 +21,13 @@ Read `camera` and `shapes` from the scene description, but only the shapes where
 Generate a camera ray for each pixel in the image and find the first shape, if any, that the ray intersects. Color the pixel the color of that shape (from the `material`), or the background color if the ray doesn't hit anything.
 
 ![Checkpoint 2 render](renders/checkpoint_2.png?raw=true)
+
+### 3: Add diffuse and ambient shading
+
+Read `lights` from the scene description. Each point light source is centered at the position specified by the x, y, and z values in `translate` and has an intensity specified by `intensity` 1 unit away from the center. Intensity falls off with distance according to the [inverse square law](https://en.wikipedia.org/wiki/Inverse-square_law). The color of each light source is specified by `color`.
+
+Each point on a shape should be shaded according to this formula, where `normal_factor` is the dot product of a unit vector pointing from the point to the light source with a unit vector pointing away from the center of the sphere (a [normal vector](https://en.wikipedia.org/wiki/Normal_(geometry))). This is known as [Lambertian reflectance](https://en.wikipedia.org/wiki/Lambertian_reflectance). `light_color` and `shape_color` should be piecewise multiplied. For example, a red shape in a green light should appear black.
+
+    final_color = ambient * shape_color + diffuse * normal_factor * light_color * intensity * shape_color * (1 / distance^2)
+
+![Checkpoint 3 render](renders/checkpoint_3.png?raw=true)

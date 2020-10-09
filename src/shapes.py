@@ -1,10 +1,12 @@
 import math
 
 class Sphere:
-    def __init__(self, center, radius, color):
+    def __init__(self, center, radius, color, ambient, diffuse):
         self.center = center
         self.radius = radius
         self.color = color
+        self.ambient = ambient
+        self.diffuse = diffuse
 
     def intersect(self, ray):
         offset = ray.origin.subtract(self.center)
@@ -18,3 +20,12 @@ class Sphere:
         if t >= 0:
             return t
         return -b + math.sqrt(discriminant)
+    
+    def normal_at(self, point):
+        return point.subtract(self.center).normalize()
+
+class PointLight:
+    def __init__(self, position, color, intensity):
+        self.position = position
+        self.color = color
+        self.intensity = intensity

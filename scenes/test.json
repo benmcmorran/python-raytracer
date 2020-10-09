@@ -93,7 +93,23 @@
                 "green": 0.9,
                 "blue": 0.9
             },
-            "intensity": 2.0
+            "intensity": 10.0
+        },
+        {
+            "type": "point",
+            "transform": {
+                "translate": {
+                    "x": -6.0,
+                    "y": 3.0,
+                    "z": 5.0
+                }
+            },
+            "color": {
+                "red": 1.0,
+                "green": 0.7,
+                "blue": 0.7
+            },
+            "intensity": 5.0
         }
     ]
 }
