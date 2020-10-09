@@ -1,0 +1,97 @@
+{
+    "output": {
+        "width": 800,
+        "height": 600
+    },
+    "world": {
+        "color": {
+            "red": 0.529,
+            "green": 0.808,
+            "blue": 0.923
+        }
+    },
+    "camera": {
+        "field_of_view": 45
+    },
+    "shapes": [
+        {
+            "type": "plane",
+            "transform": {
+                "translate": {
+                    "y": -1.0
+                }
+            },
+            "material": {
+                "color": {
+                    "red": 0.8,
+                    "green": 0.8,
+                    "blue": 0.8
+                },
+                "ambient": 0.0,
+                "diffuse": 0.9,
+                "specular": 0.1,
+                "shininess": 10
+            }
+        },
+        {
+            "type": "sphere",
+            "transform": {
+                "translate": {
+                    "x": -1.0,
+                    "y": -0.5,
+                    "z": 2.0
+                }
+            },
+            "material": {
+                "color": {
+                    "red": 0.9,
+                    "green": 0.4,
+                    "blue": 0.3
+                },
+                "ambient": 0.1,
+                "diffuse": 0.3,
+                "specular": 0.6,
+                "shininess": 50
+            }
+        },
+        {
+            "type": "sphere",
+            "transform": {
+                "translate": {
+                    "x": 1.0,
+                    "y": -0.5,
+                    "z": 2.0
+                }
+            },
+            "material": {
+                "color": {
+                    "red": 0.1,
+                    "green": 1.0,
+                    "blue": 0.3
+                },
+                "ambient": 0.0,
+                "diffuse": 1.0,
+                "specular": 0.0,
+                "shininess": 0
+            }
+        }
+    ],
+    "lights": [
+        {
+            "type": "point",
+            "transform": {
+                "translate": {
+                    "x": 5.0,
+                    "y": 2.0,
+                    "z": -1.0
+                }
+            },
+            "color": {
+                "red": 0.8,
+                "green": 0.9,
+                "blue": 0.9
+            },
+            "intensity": 2.0
+        }
+    ]
+}
